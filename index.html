@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Meevo Sales Enablement Dashboard</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.css" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f5f7fa;color:#3d4f5f}
+.header{background:#fff;border-bottom:1px solid #e2e8f0;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.logo-area{display:flex;align-items:center;gap:14px}
+.logo-area svg{flex-shrink:0}
+.header-title{font-size:17px;font-weight:600;color:#1a6b54}.header-sub{font-size:12px;color:#7a8fa0;margin-top:1px}
+.header-right{font-size:11px;color:#94a3b8}
+.tabs{background:#fff;border-bottom:1px solid #e2e8f0;display:flex;overflow-x:auto;position:sticky;top:0;z-index:10}
+.tab{padding:13px 22px;font-size:13px;font-weight:500;color:#7a8fa0;background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s}
+.tab:hover{color:#1a6b54}.tab.active{font-weight:600;color:#1a6b54;border-bottom-color:#1a6b54}
+.main{padding:24px;max-width:1020px;margin:0 auto}
+.cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.card{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid #e8edf2;flex:1;min-width:150;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card-label{font-size:11px;color:#7a8fa0;font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.card-value{font-size:28px;font-weight:700;margin-top:4px}
+.card-sub{font-size:11px;color:#94a3b8;margin-top:3px}
+.section-title{font-size:16px;font-weight:600;color:#2d3e4e;margin-bottom:6px}
+.section-sub{font-size:12px;color:#7a8fa0;margin-bottom:16px}
+.monthly-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.mo-card{flex:1;min-width:120;background:#fff;border-radius:12px;padding:14px 16px;border:1px solid #e8edf2;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.mo-label{font-size:11px;color:#94a3b8;font-weight:500}.mo-val{font-size:24px;font-weight:700;margin-top:3px}
+.search-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.search-input{padding:8px 14px;border-radius:10px;border:1px solid #dde3ea;font-size:12px;width:220px;font-family:inherit;background:#fff;color:#3d4f5f;outline:none;transition:border .2s}
+.search-input:focus{border-color:#1a6b54}
+.tbl-wrap{overflow-x:auto;background:#fff;border-radius:14px;border:1px solid #e8edf2;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:#f8fafb;border-bottom:2px solid #e8edf2}
+th{text-align:left;padding:11px 12px;color:#7a8fa0;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;user-select:none}
+td{padding:11px 12px;border-bottom:1px solid #f0f3f6}
+tbody tr{transition:background .1s;cursor:pointer}tbody tr:hover{background:#f5faf8}
+.av{border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
+.name-cell{display:flex;align-items:center;gap:10px}
+.badge{padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700}
+.rep-card{background:#fff;border-radius:14px;padding:20px;margin-bottom:14px;border:1px solid #e8edf2;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.rep-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.rep-name{font-weight:600;font-size:15px;color:#2d3e4e}.rep-sub{font-size:12px;color:#94a3b8}
+.rep-score{font-size:26px;font-weight:700}
+.rep-stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.rep-stat{flex:1;min-width:90;border-radius:10px;padding:10px 12px;text-align:center}
+.rep-stat-val{font-size:20px;font-weight:700}.rep-stat-label{font-size:10px;color:#7a8fa0;margin-top:2px}
+.tag-section{margin-bottom:12px}
+.tag-title{font-size:11px;font-weight:600;color:#7a8fa0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{padding:4px 12px;border-radius:14px;font-size:11px;font-weight:500}
+.tag-theme{background:#e8f5f0;color:#1a6b54}.tag-action{background:#fef8e8;color:#8a6d1b}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.filter-btn{padding:6px 14px;border-radius:18px;font-size:11px;border:none;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500}
+.filter-btn.active{background:#1a6b54;color:#fff;font-weight:600}
+.filter-btn:not(.active){background:#edf1f5;color:#5a6b7a}
+.filter-btn:not(.active):hover{background:#dde8e4;color:#1a6b54}
+.comp-card{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:10px;border:1px solid #e8edf2;cursor:pointer;transition:box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.comp-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.comp-row{display:flex;align-items:center;gap:14px}
+.comp-name{font-size:13px;font-weight:600;color:#2d3e4e}
+.bar-bg{background:#edf1f5;border-radius:6px;height:6px;width:100%;overflow:hidden;margin-top:6px}
+.bar-fill{height:100%;border-radius:6px;transition:width .4s}
+.comp-score{font-size:22px;font-weight:700;min-width:50px;text-align:right}
+.comp-detail{margin-top:10px;padding:12px 14px;border-radius:10px;font-size:12px;display:none;line-height:1.5}
+.comp-detail.open{display:block}
+.gap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:14px}
+.gap-card{background:#fff;border-radius:12px;padding:14px 16px;border:1px solid #e8edf2}
+.gap-card-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gap-item{font-size:11px;color:#5a6b7a;padding:2px 0}.gap-item.limited{color:#b8c5d0}
+.trend-row{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:10px;border:1px solid #e8edf2;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.trend-row.warn{border-color:#f5c6c6}
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:12px}
+.trend-mini{background:#fff;border-radius:10px;padding:10px 14px;border:1px solid #e8edf2;display:flex;align-items:center;gap:10px}
+.cov-banner{background:linear-gradient(135deg,#e8f5f0,#d1f0e4);border-radius:14px;padding:28px;margin-bottom:28px;border:1px solid #a7e0c8;text-align:center}
+.cov-pct{font-size:44px;font-weight:800;color:#1a6b54}.cov-title{font-size:17px;font-weight:600;color:#14533e}
+.ht-box{background:#fff;border-radius:14px;padding:20px;margin-top:22px;border:1px solid #e8edf2;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.ht-box h3{font-size:14px;font-weight:600;color:#2d3e4e;margin-bottom:14px}
+.ht-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f0f3f6}
+.ht-row:last-child{border-bottom:none}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:16px}
+.bar-col{flex:1;text-align:center}.bar-fill-v{border-radius:5px 5px 0 0;transition:height .3s;min-height:8px}
+.bar-val{font-size:11px;font-weight:600;margin-top:4px}.bar-lbl{font-size:9px;color:#94a3b8;margin-top:1px}
+.footer{text-align:center;padding:28px 20px;color:#94a3b8;font-size:11px}
+.spark{flex-shrink:0}
+::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-track{background:#f1f1f1;border-radius:3px}::-webkit-scrollbar-thumb{background:#c8d0d8;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo-area">
+    <svg width="120" height="36" viewBox="0 0 120 36" xmlns="http://www.w3.org/2000/svg">
+      <rect width="120" height="36" rx="6" fill="#1a6b54"/>
+      <text x="60" y="23" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="700" fill="#ffffff" letter-spacing="2">MEEVO</text>
+    </svg>
+    <div>
+      <div class="header-title">Sales Onboarding — Enablement Dashboard</div>
+      <div class="header-sub">Q1 2026 · 22 Reps · 4 Coaching Frameworks</div>
+    </div>
+  </div>
+  <div class="header-right">Last updated: Apr 1, 2026</div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div class="main" id="main"></div>
+<div class="footer">Meevo Sales Enablement Dashboard · Built for team coaching visibility · Q1 2026</div>
+
+<script>
+var REPS=[
+{id:1,name:"Sandra Arnette",total:872,excellent:51,good:212,needsWork:299,avg:2.49,gaps:["Discovery - Implications (1.10)","Discovery - Why Top Priority (1.17)","Intro Call - Why Top Priority (1.00)"],trend:[2.50,2.66,2.39,2.50],trendLabel:"Recovering",opps:167,calls:354,themes:["Gatekeeper navigation (562 calls)","Discovery gaps (30)","Demo execution (76)"],actions:["Discovery fundamentals","Gatekeeper info gleaning"]},
+{id:2,name:"Africa Brown",total:829,excellent:89,good:175,needsWork:269,avg:2.50,gaps:["Intro Call - Implications","Intro Call - Why Top Priority","GK Navigation"],trend:[2.44,2.74,2.59,2.68],trendLabel:"Recovering",opps:135,calls:202,themes:["Cold calling consistency","Intro call effectiveness"],actions:["Reduce variability","Improve intro call framework"]},
+{id:3,name:"Kaelyne Chavez",total:685,excellent:76,good:139,needsWork:181,avg:2.68,gaps:["GK Intel Gathering","Intro Call Structure","Consistency"],trend:[null,2.65,2.70,2.68],trendLabel:"Stable",opps:109,calls:136,themes:["Gatekeeper navigation","Intro calls"],actions:["GK intel gathering","Intro call structure"]},
+{id:4,name:"Amber Martello",total:607,excellent:99,good:138,needsWork:111,avg:2.51,gaps:["GK - Info Gleaning","GK - Connecting","Cross-call Consistency"],trend:[null,2.48,2.53,2.51],trendLabel:"Improving",opps:150,calls:193,themes:["Cold call execution","Consistency"],actions:["Consistency improvement"]},
+{id:5,name:"Chloe Arnette",total:535,excellent:47,good:119,needsWork:154,avg:2.66,gaps:["GK Navigation","Intro Call Framework","GK Connection"],trend:[2.38,2.92,2.99,2.94],trendLabel:"Strong ↑",opps:117,calls:137,themes:["Gatekeeper navigation","Intro calls"],actions:["Intro call framework","GK connection"]},
+{id:6,name:"Myranda Grabman",total:470,excellent:99,good:138,needsWork:111,avg:2.89,gaps:["Limited data","Limited data","Limited data"],trend:[null,2.88,2.89,2.89],trendLabel:"Rock Solid",opps:96,calls:149,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:7,name:"Matt McCarthy",total:414,excellent:93,good:99,needsWork:111,avg:2.84,gaps:["Limited data","Limited data","Limited data"],trend:[null,2.80,2.86,2.84],trendLabel:"Stable",opps:117,calls:165,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:8,name:"Jenna Flory",total:385,excellent:58,good:90,needsWork:123,avg:2.58,gaps:["Cold Call Execution","Discovery Depth","Consistency"],trend:[null,2.55,2.60,2.58],trendLabel:"Stable",opps:121,calls:162,themes:["Cold call execution","Discovery depth"],actions:["Discovery coaching","Consistency"]},
+{id:9,name:"Tyler Butt",total:382,excellent:23,good:101,needsWork:158,avg:2.58,gaps:["Call Quality","Volume vs Quality","GK Navigation"],trend:[null,2.54,2.60,2.58],trendLabel:"Stable",opps:112,calls:135,themes:["Call quality","Volume vs quality balance"],actions:["Quality focus","GK navigation"]},
+{id:10,name:"William Appleford",total:378,excellent:33,good:93,needsWork:120,avg:2.63,gaps:["GK Navigation","Cold Call Consistency","Discovery"],trend:[2.46,2.58,2.58,null],trendLabel:"Improving",opps:73,calls:83,themes:["GK navigation improvement"],actions:["Continue GK coaching"]},
+{id:11,name:"Michael Senich",total:303,excellent:0,good:0,needsWork:0,avg:2.70,gaps:["Limited data","Limited data","Limited data"],trend:[null,2.68,2.71,2.70],trendLabel:"Stable",opps:117,calls:183,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:12,name:"Monica Lopez",total:292,excellent:0,good:0,needsWork:0,avg:2.57,gaps:["Limited data","Limited data","Limited data"],trend:[null,2.55,2.58,2.57],trendLabel:"Stable",opps:83,calls:115,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:13,name:"Candice Chuy",total:288,excellent:45,good:28,needsWork:39,avg:2.71,gaps:["Limited data","Limited data","Limited data"],trend:[null,2.68,2.73,2.71],trendLabel:"Stable",opps:103,calls:158,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:14,name:"Brandon Cline",total:231,excellent:38,good:28,needsWork:47,avg:2.73,gaps:["Limited data","Limited data","Limited data"],trend:[null,2.75,2.89,null],trendLabel:"Improving",opps:54,calls:69,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:15,name:"Denise LaRocca",total:182,excellent:0,good:0,needsWork:0,avg:2.79,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,2.79,2.79],trendLabel:"New",opps:136,calls:161,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:16,name:"Tony Sansone",total:161,excellent:0,good:0,needsWork:0,avg:2.78,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,2.78,2.78],trendLabel:"New",opps:124,calls:151,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:17,name:"Sky Guasco",total:116,excellent:18,good:37,needsWork:29,avg:2.80,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,2.78,2.80],trendLabel:"New",opps:40,calls:47,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:18,name:"Spencer Hicks",total:108,excellent:7,good:35,needsWork:44,avg:2.65,gaps:["Call Quality","Consistency","GK Navigation"],trend:[null,null,2.62,2.65],trendLabel:"New",opps:24,calls:29,themes:["Call quality","Consistency"],actions:["Quality coaching","GK navigation"]},
+{id:19,name:"Lauren Hopkins",total:94,excellent:18,good:20,needsWork:21,avg:2.97,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,2.85,2.97],trendLabel:"Strong ↑",opps:62,calls:69,themes:["Strong performer"],actions:["Peer coaching candidate"]},
+{id:20,name:"Ryan Burns",total:45,excellent:12,good:15,needsWork:5,avg:2.77,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,null,2.77],trendLabel:"New",opps:24,calls:30,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:21,name:"Jeremy Sexton",total:34,excellent:0,good:0,needsWork:0,avg:2.59,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,null,2.59],trendLabel:"New",opps:11,calls:12,themes:["General coaching"],actions:["Continue current coaching"]},
+{id:22,name:"Patrick McCaghren",total:7,excellent:0,good:0,needsWork:0,avg:2.37,gaps:["Limited data","Limited data","Limited data"],trend:[null,null,null,2.37],trendLabel:"New",opps:3,calls:5,themes:["Limited calls"],actions:["Increase call volume"]}
+];
+var COMPS=[
+{name:"Discovery - Implications",avg:1.10,type:"gap",detail:"Sandra Arnette: 27/30 evals below 2.0. Prospects don't feel urgency to change."},
+{name:"Discovery - Why Top Priority",avg:1.17,type:"gap",detail:"Sandra Arnette: 25/30 evals below 2.0. Misaligned demos and proposals."},
+{name:"Intro Call - Implications",avg:1.33,type:"gap",detail:"Multiple reps struggling across limited evaluations."},
+{name:"AE Demo - Open-ended Questions",avg:1.63,type:"gap",detail:"Sandra Arnette: 28/76 evals below 2.0. Talking AT prospects instead of WITH them."},
+{name:"AE Demo - Clarifying Questions",avg:1.67,type:"gap",detail:"Sandra Arnette: 25/76 evals below 2.0. Not confirming understanding."},
+{name:"AE Demo - Features vs Value",avg:1.81,type:"gap",detail:"Sandra Arnette: 18/68 evals below 2.0. Leading with features instead of outcomes."},
+{name:"Cold Call - GK Info Gleaning",avg:1.99,type:"gap",detail:"Sandra Arnette: 247/562 evals below 2.0. Not extracting intel before asking for DM."},
+{name:"Intro Call - Next Steps",avg:4.67,type:"strength",detail:"Sandra Arnette: 3/3 evals at 4+. Peer coaching opportunity on closing intro calls."},
+{name:"AE Demo - Next Steps",avg:3.68,type:"strength",detail:"Multiple reps strong. Securing post-demo commitments."},
+{name:"CC - Owner Intro/Hook",avg:3.30,type:"strength",detail:"Lauren Hopkins, Matt McCarthy, Brandon Cline lead. Opening statement training."},
+{name:"CC - Owner Objection Nav",avg:3.29,type:"strength",detail:"Chloe Arnette, William Appleford lead. Objection handling workshops."},
+{name:"Professional Rapport",avg:3.26,type:"strength",detail:"Chloe Arnette: 201/312 evals at 4+. Relationship building training."}
+];
+var MONTHLY=[{month:"January",avg:2.54,strong:38,weak:27},{month:"February",avg:2.68,strong:44,weak:20},{month:"March",avg:2.59,strong:35,weak:24},{month:"April",avg:2.63,strong:41,weak:18}];
+var MO=["Jan","Feb","Mar","Apr"];
+function sc(v){return v>=3?"#1a6b54":v>=2.7?"#3b82c4":v>=2.5?"#c4880d":"#c45a3b"}
+function scBg(v){return v>=3?"rgba(26,107,84,.1)":v>=2.7?"rgba(59,130,196,.1)":v>=2.5?"rgba(196,136,13,.1)":"rgba(196,90,59,.1)"}
+function pct(n,t){return t?Math.round(n/t*100):0}
+function hue(n){return n.split("").reduce(function(a,c){return a+c.charCodeAt(0)},0)%360}
+function initials(n){return n.split(" ").map(function(w){return w[0]}).join("")}
+function av(name,sz){return'<div class="av" style="width:'+sz+'px;height:'+sz+'px;font-size:'+(sz*.36)+'px;background:hsl('+hue(name)+',40%,45%)">'+initials(name)+'</div>'}
+function spark(data,w,h){w=w||100;h=h||28;var v=data.map(function(val,i){return val!==null?{v:val,i:i}:null}).filter(Boolean);if(v.length<2)return'<span style="font-size:11px;color:#b8c5d0">—</span>';var mn=Math.min.apply(null,v.map(function(d){return d.v}))-0.1,mx=Math.max.apply(null,v.map(function(d){return d.v}))+0.1;var pts=v.map(function(d){return((d.i/3)*(w-4)+2)+","+(h-2-((d.v-mn)/(mx-mn))*(h-4))}).join(" ");var last=v[v.length-1].v,first=v[0].v,col=last>first?"#1a6b54":last<first?"#c45a3b":"#7a8fa0";var dots=v.map(function(d,i){var x=(d.i/3)*(w-4)+2,y=h-2-((d.v-mn)/(mx-mn))*(h-4);return'<circle cx="'+x+'" cy="'+y+'" r="'+(i===v.length-1?3:1.5)+'" fill="'+col+'"/>'}).join("");return'<svg class="spark" width="'+w+'" height="'+h+'"><polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+dots+'</svg>'}
+var currentTab="Overview",sortKey="total",sortDir="desc",searchVal="",selRep=null;
+var TABNAMES=["Overview","Call Coaching","Skills & Gaps","Trends","Deal Coverage"];
+function sortedReps(){var f=REPS.filter(function(r){return r.name.toLowerCase().indexOf(searchVal.toLowerCase())>=0});f.sort(function(a,b){return sortDir==="desc"?(b[sortKey]||0)-(a[sortKey]||0):(a[sortKey]||0)-(b[sortKey]||0)});return f}
+function renderTabs(){var h="";TABNAMES.forEach(function(t){h+='<button class="tab'+(currentTab===t?" active":"")+'" data-tab="'+t+'">'+t+'</button>'});document.getElementById("tabs").innerHTML=h;document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){currentTab=this.dataset.tab;selRep=null;render()}})}
+function renderOverview(){var tc=REPS.reduce(function(s,r){return s+r.total},0),ta=(REPS.reduce(function(s,r){return s+r.avg*r.total},0)/tc).toFixed(2),to=REPS.reduce(function(s,r){return s+r.opps},0),reps=sortedReps(),si=sortKey,arrow=sortDir==="desc"?"▼":"▲";
+var h='<div class="cards"><div class="card"><div class="card-label">Total Calls Reviewed</div><div class="card-value" style="color:#1a6b54">'+tc.toLocaleString()+'</div><div class="card-sub">YTD across all reps</div></div><div class="card"><div class="card-label">Team Avg Score</div><div class="card-value" style="color:'+sc(parseFloat(ta))+'">'+ta+'</div><div class="card-sub">Out of 5.0</div></div><div class="card"><div class="card-label">Opps Coached</div><div class="card-value" style="color:#1a6b54">'+to.toLocaleString()+'</div><div class="card-sub">100% coverage</div></div><div class="card"><div class="card-label">Competencies</div><div class="card-value" style="color:#c4880d">453</div><div class="card-sub">12 key areas tracked</div></div></div>';
+h+='<div class="monthly-row">';MONTHLY.forEach(function(m){h+='<div class="mo-card"><div class="mo-label">'+m.month+'</div><div class="mo-val" style="color:'+sc(m.avg)+'">'+m.avg+'</div><div style="display:flex;gap:10px;margin-top:6px"><span style="font-size:10px;color:#1a6b54">▲ '+m.strong+'% strong</span><span style="font-size:10px;color:#c45a3b">▼ '+m.weak+'% weak</span></div></div>'});h+='</div>';
+h+='<div class="search-row"><div class="section-title">Team Roster ('+reps.length+')</div><input class="search-input" placeholder="Search reps..." value="'+searchVal+'" id="repSearch"/></div>';
+h+='<div class="tbl-wrap"><table><thead><tr><th>Rep</th><th style="text-align:right" data-sort="total">Reviewed'+(si==="total"?" "+arrow:"")+'</th><th style="text-align:right" data-sort="avg">Avg'+(si==="avg"?" "+arrow:"")+'</th><th style="text-align:center">Excellent</th><th style="text-align:center">Needs Work</th><th style="text-align:center">Trend</th><th style="text-align:right" data-sort="opps">Opps'+(si==="opps"?" "+arrow:"")+'</th></tr></thead><tbody>';
+reps.forEach(function(r){h+='<tr data-rep="'+r.id+'"><td><div class="name-cell">'+av(r.name,30)+'<div style="font-weight:600;font-size:13px;color:#2d3e4e">'+r.name+'</div></div></td><td style="text-align:right;font-weight:600">'+r.total+'</td><td style="text-align:right"><span class="badge" style="color:'+sc(r.avg)+';background:'+scBg(r.avg)+'">'+r.avg+'</span></td><td style="text-align:center;color:#1a6b54;font-weight:500">'+(r.excellent>0?r.excellent+" ("+pct(r.excellent,r.total)+"%)":"—")+'</td><td style="text-align:center;color:#c45a3b;font-weight:500">'+(r.needsWork>0?r.needsWork+" ("+pct(r.needsWork,r.total)+"%)":"—")+'</td><td style="text-align:center">'+spark(r.trend)+'</td><td style="text-align:right;font-weight:500">'+r.opps+'</td></tr>'});
+h+='</tbody></table></div>';return h}
+function renderCoaching(){var h='<div class="filter-row"><button class="filter-btn'+(selRep===null?" active":"")+'" data-rep="all">All Reps</button>';REPS.forEach(function(r){h+='<button class="filter-btn'+(selRep===r.id?" active":"")+'" data-rep="'+r.id+'">'+r.name.split(" ")[0]+'</button>'});h+='</div>';
+var list=selRep?REPS.filter(function(r){return r.id===selRep}):REPS;
+list.forEach(function(r){h+='<div class="rep-card"><div class="rep-header">'+av(r.name,36)+'<div style="flex:1"><div class="rep-name">'+r.name+'</div><div class="rep-sub">'+r.total+' calls · Avg: '+r.avg+' · '+r.trendLabel+'</div></div><div class="rep-score" style="color:'+sc(r.avg)+'">'+r.avg+'</div></div>';
+h+='<div class="rep-stats">';[{l:"Excellent",v:r.excellent,c:"#1a6b54"},{l:"Good",v:r.good,c:"#3b82c4"},{l:"Needs Work",v:r.needsWork,c:"#c45a3b"}].forEach(function(b){h+='<div class="rep-stat" style="background:'+(b.v>0?b.c+"11":"#f8fafb")+'"><div class="rep-stat-val" style="color:'+(b.v>0?b.c:"#cdd5de")+'">'+(b.v>0?b.v:"—")+'</div><div class="rep-stat-label">'+b.l+(b.v>0?" ("+pct(b.v,r.total)+"%)":"")+'</div></div>'});h+='</div>';
+h+='<div class="tag-section"><div class="tag-title">Key Themes</div><div class="tags">';r.themes.forEach(function(t){h+='<span class="tag tag-theme">'+t+'</span>'});h+='</div></div>';
+h+='<div class="tag-section"><div class="tag-title">Coaching Actions</div><div class="tags">';r.actions.forEach(function(a){h+='<span class="tag tag-action">'+a+'</span>'});h+='</div></div>';
+if(selRep){h+='<div style="margin-top:16px"><div class="tag-title">Score Trend (Jan–Apr)</div><div class="bar-chart">';r.trend.forEach(function(v,i){h+='<div class="bar-col">';if(v!==null){h+='<div class="bar-fill-v" style="height:'+Math.max((v-2)*120,8)+'px;background:'+sc(v)+'"></div><div class="bar-val" style="color:'+sc(v)+'">'+v+'</div>'}else{h+='<div style="font-size:10px;color:#cdd5de;padding-bottom:18px">—</div>'}h+='<div class="bar-lbl">'+MO[i]+'</div></div>'});h+='</div></div>'}
+h+='</div>'});return h}
+function renderSkills(){var h='<div class="section-title" style="color:#c45a3b">Critical Gaps (Avg < 2.0)</div><div class="section-sub">Urgent coaching needed — these competencies are holding the team back</div>';
+COMPS.filter(function(c){return c.type==="gap"}).forEach(function(c,i){h+='<div class="comp-card" data-comp="'+i+'"><div class="comp-row"><div style="flex:1"><div class="comp-name">'+c.name+'</div><div class="bar-bg"><div class="bar-fill" style="width:'+((c.avg/5)*100)+'%;background:'+sc(c.avg)+'"></div></div></div><div class="comp-score" style="color:'+sc(c.avg)+'">'+c.avg+'</div></div><div class="comp-detail" id="comp-gap-'+i+'" style="background:#fdf2f0;color:#7a3322">'+c.detail+'</div></div>'});
+h+='<div class="section-title" style="color:#1a6b54;margin-top:32px">Team Strengths (Avg > 3.0)</div><div class="section-sub">Leverage these for peer coaching and best practice sharing</div>';
+COMPS.filter(function(c){return c.type==="strength"}).forEach(function(c,i){h+='<div class="comp-card" data-comp-s="'+i+'"><div class="comp-row"><div style="flex:1"><div class="comp-name">'+c.name+'</div><div class="bar-bg"><div class="bar-fill" style="width:'+((c.avg/5)*100)+'%;background:'+sc(c.avg)+'"></div></div></div><div class="comp-score" style="color:'+sc(c.avg)+'">'+c.avg+'</div></div><div class="comp-detail" id="comp-str-'+i+'" style="background:#e8f5f0;color:#14533e">'+c.detail+'</div></div>'});
+h+='<div class="section-title" style="margin-top:32px">Individual Top 3 Gaps</div><div class="gap-grid">';
+REPS.forEach(function(r){h+='<div class="gap-card"><div class="gap-card-header">'+av(r.name,24)+'<span style="font-weight:600;font-size:13px;color:#2d3e4e">'+r.name+'</span></div>';r.gaps.forEach(function(g,i){h+='<div class="gap-item'+(g.includes("Limited")?" limited":"")+'">'+(i+1)+'. '+g+'</div>'});h+='</div>'});h+='</div>';return h}
+function renderTrends(){var h='<div class="section-title">Monthly Team Performance</div><div class="section-sub" style="margin-bottom:18px">February was the team\'s best month. March saw regression. April is recovering.</div><div class="monthly-row">';
+MONTHLY.forEach(function(m){h+='<div class="mo-card" style="text-align:center;padding:18px"><div class="mo-label">'+m.month+'</div><div style="font-size:32px;font-weight:700;color:'+sc(m.avg)+';margin-top:4px">'+m.avg+'</div><div style="display:flex;justify-content:center;gap:16px;margin-top:10px"><div><span style="font-size:16px;font-weight:700;color:#1a6b54">'+m.strong+'%</span><div style="font-size:9px;color:#94a3b8">Strong ≥3.0</div></div><div><span style="font-size:16px;font-weight:700;color:#c45a3b">'+m.weak+'%</span><div style="font-size:9px;color:#94a3b8">Weak <2.0</div></div></div></div>'});h+='</div>';
+h+='<div class="section-title" style="color:#1a6b54;margin-top:8px">Improving Reps</div><div class="section-sub">Coaching is working — positive trajectory</div>';
+REPS.filter(function(r){return r.trendLabel==="Strong ↑"||r.trendLabel==="Improving"}).forEach(function(r){h+='<div class="trend-row">'+av(r.name,32)+'<div style="flex:1"><div style="font-weight:600;font-size:13px;color:#2d3e4e">'+r.name+'</div><div style="font-size:11px;color:#1a6b54">'+r.trendLabel+'</div></div>'+spark(r.trend,120,32)+'<div style="font-size:16px;font-weight:700;color:'+sc(r.avg)+'">'+r.avg+'</div></div>'});
+h+='<div class="section-title" style="color:#c45a3b;margin-top:28px">Watch List</div><div class="section-sub">Showing regression or inconsistency — monitor closely</div>';
+REPS.filter(function(r){return r.trendLabel==="Recovering"}).forEach(function(r){h+='<div class="trend-row warn">'+av(r.name,32)+'<div style="flex:1"><div style="font-weight:600;font-size:13px;color:#2d3e4e">'+r.name+'</div><div style="font-size:11px;color:#c45a3b">'+r.trendLabel+' — needs attention</div></div>'+spark(r.trend,120,32)+'<div style="font-size:16px;font-weight:700;color:'+sc(r.avg)+'">'+r.avg+'</div></div>'});
+h+='<div class="section-title" style="color:#7a8fa0;margin-top:28px">Stable Performers</div><div class="section-sub">Consistent — maintain current coaching cadence</div>';
+REPS.filter(function(r){return r.trendLabel==="Rock Solid"||r.trendLabel==="Stable"}).forEach(function(r){h+='<div class="trend-row" style="padding:12px 18px">'+av(r.name,28)+'<div style="flex:1"><div style="font-weight:500;font-size:13px;color:#3d4f5f">'+r.name+'</div></div>'+spark(r.trend,80,24)+'<div style="font-size:14px;font-weight:700;color:'+sc(r.avg)+'">'+r.avg+'</div></div>'});
+h+='<div class="section-title" style="margin-top:28px">All Reps — Trend Sparklines</div><div class="trend-grid">';
+REPS.forEach(function(r){h+='<div class="trend-mini">'+av(r.name,24)+'<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:#3d4f5f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+r.name+'</div><div style="font-size:10px;color:#94a3b8">'+r.trendLabel+'</div></div>'+spark(r.trend,60,20)+'<span style="font-size:12px;font-weight:700;color:'+sc(r.avg)+'">'+r.avg+'</span></div>'});h+='</div>';return h}
+function renderDeals(){var sorted=[].concat(REPS).sort(function(a,b){return b.opps-a.opps});
+var h='<div class="cov-banner"><div class="cov-pct">100%</div><div class="cov-title">Coaching Coverage Achieved</div><div style="font-size:12px;color:#5a7a6a;margin-top:6px">Every rep has 0 uncoached opportunities — all deals with calls reviewed and scored</div></div>';
+h+='<div class="section-title">Deal Coaching Leaderboard</div><div class="section-sub" style="margin-bottom:14px">Ranked by unique opportunities coached</div>';
+h+='<div class="tbl-wrap"><table><thead><tr><th style="width:30px">#</th><th>Rep</th><th style="text-align:right">Opps</th><th style="text-align:right">Calls</th><th style="text-align:right">Calls/Opp</th><th style="text-align:center">Coverage</th></tr></thead><tbody>';
+sorted.forEach(function(r,i){h+='<tr><td style="color:#94a3b8;font-weight:500">'+(i+1)+'</td><td><div class="name-cell">'+av(r.name,26)+'<span style="font-weight:600;font-size:13px;color:#2d3e4e">'+r.name+'</span></div></td><td style="text-align:right;font-weight:600">'+r.opps+'</td><td style="text-align:right">'+r.calls+'</td><td style="text-align:right;font-weight:500">'+(r.calls/r.opps).toFixed(1)+'</td><td style="text-align:center"><span style="background:#e8f5f0;color:#1a6b54;padding:3px 12px;border-radius:12px;font-size:11px;font-weight:600">100%</span></td></tr>'});
+h+='</tbody></table></div>';
+var ht=[].concat(REPS).sort(function(a,b){return(b.calls/b.opps)-(a.calls/a.opps)}).slice(0,5);
+h+='<div class="ht-box"><h3>High-Touch Reps (Most calls per opportunity)</h3>';
+ht.forEach(function(r){var ratio=(r.calls/r.opps).toFixed(1);h+='<div class="ht-row">'+av(r.name,28)+'<div style="flex:1;font-size:13px;font-weight:500;color:#3d4f5f">'+r.name+'</div><div style="width:80px"><div class="bar-bg"><div class="bar-fill" style="width:'+((r.calls/r.opps)/2.5*100)+'%;background:#1a6b54"></div></div></div><div style="font-size:16px;font-weight:700;color:#1a6b54;min-width:40px;text-align:right">'+ratio+'</div><div style="font-size:10px;color:#94a3b8">calls/opp</div></div>'});
+h+='</div>';return h}
+function render(){renderTabs();var m=document.getElementById("main");if(currentTab==="Overview")m.innerHTML=renderOverview();else if(currentTab==="Call Coaching")m.innerHTML=renderCoaching();else if(currentTab==="Skills & Gaps")m.innerHTML=renderSkills();else if(currentTab==="Trends")m.innerHTML=renderTrends();else if(currentTab==="Deal Coverage")m.innerHTML=renderDeals();bindEvents()}
+function bindEvents(){var si=document.getElementById("repSearch");if(si){si.oninput=function(){searchVal=this.value;render();setTimeout(function(){var el=document.getElementById("repSearch");if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}},0)}}
+document.querySelectorAll("th[data-sort]").forEach(function(th){th.onclick=function(){var k=this.dataset.sort;if(sortKey===k)sortDir=sortDir==="desc"?"asc":"desc";else{sortKey=k;sortDir="desc"}render()}});
+document.querySelectorAll("tr[data-rep]").forEach(function(tr){tr.onclick=function(){selRep=parseInt(this.dataset.rep);currentTab="Call Coaching";render()}});
+document.querySelectorAll(".filter-btn").forEach(function(b){b.onclick=function(){selRep=this.dataset.rep==="all"?null:parseInt(this.dataset.rep);render()}});
+document.querySelectorAll(".comp-card[data-comp]").forEach(function(c){c.onclick=function(){var d=document.getElementById("comp-gap-"+this.dataset.comp);if(d)d.classList.toggle("open")}});
+document.querySelectorAll(".comp-card[data-comp-s]").forEach(function(c){c.onclick=function(){var d=document.getElementById("comp-str-"+this.dataset.compS);if(d)d.classList.toggle("open")}})}
+render();
+</script>
+</body>
+</html>
